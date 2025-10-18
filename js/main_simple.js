@@ -10,6 +10,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const menuImageWrapper = document.getElementById('menuImageWrapper');
     const menuImage = document.getElementById('menuImage');
     const preloader = document.getElementById('preloader');
+    
+    // Ustaw źródło obrazu z konfiguracji
+    if (menuImage && MENU_CONFIG && MENU_CONFIG.image && MENU_CONFIG.image.path) {
+        menuImage.src = MENU_CONFIG.image.path;
+        menuImage.alt = MENU_CONFIG.image.alt || 'Menu';
+    }
     const zoomInBtn = document.getElementById('zoomIn');
     const zoomOutBtn = document.getElementById('zoomOut');
     const resetViewBtn = document.getElementById('resetView');

@@ -44,10 +44,10 @@ const MENU_CONFIG = {
     
     // Ustawienia obrazu menu
     image: {
-        path: 'images/beirutbar_drinks.jpg',  // Ścieżka do obrazu menu napojów
+        path: 'images/krakenbar_drinks.jpg',  // Ścieżka do obrazu menu napojów
         alt: 'Drinks Menu Kraken Bar',        // Tekst alternatywny
         width: 3000,   // Szerokość rzeczywista
-        height: 15300,  // Wysokość rzeczywista
+        height: 7895,  // Wysokość rzeczywista
     },
     
     // Ustawienia interakcji

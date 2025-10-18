@@ -4,10 +4,10 @@ const MENU_CONFIG = {
     initialView: {
         // Skala początkowa (powiększenie) jako procent wysokości ekranu
         // 100 = obraz wypełnia 100% wysokości ekranu (cały obraz widoczny)
-        // 60 = obraz wypełnia 60% wysokości ekranu (widoczne 60% obrazu, powiększone)
+        // 80 = obraz wypełnia 80% wysokości ekranu (lekko powiększony, aby lepiej widać szczegóły)
         // UWAGA: Wartość nie może być większa niż 100, bo wtedy pokazałoby tło!
         // System automatycznie ograniczy skalę, aby obraz zawsze wypełniał ekran
-        scalePercent: 100,  // 100% szerokości - cały obraz widoczny
+        scalePercent: 80,  // 80% - lekko powiększony widok
         
         // Pozycja początkowa - który punkt obrazu ma być widoczny
         // Wartości 0-100 (procent szerokości/wysokości obrazu)
@@ -44,10 +44,10 @@ const MENU_CONFIG = {
     
     // Ustawienia obrazu menu
     image: {
-        path: 'images/beirutbar_food.jpg',  // Ścieżka do obrazu menu (zoptymalizowany JPEG)
+        path: 'images/krakenbar_food.jpg',  // Ścieżka do obrazu menu (zoptymalizowany JPEG)
         alt: 'Menu Kraken Bar',        // Tekst alternatywny
         width: 3000,   // Szerokość rzeczywista
-        height: 13200,  // Wysokość rzeczywista
+        height: 4700,  // Wysokość rzeczywista (zaktualizowana)
     },
     
     // Ustawienia interakcji
