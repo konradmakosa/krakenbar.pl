@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Kraken Bar - Drinks Menu</title>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GCL42G0L6D"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-GCL42G0L6D');
+    </script>
+    
+    <link rel="stylesheet" href="css/style.css?v=20">
+    <link rel="stylesheet" href="css/animations.css?v=20">
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Preloader z Krakenem -->
+    <div class="preloader" id="preloader">
+        <img src="images/tank.gif" alt="Ładowanie..." class="preloader-kraken">
+    </div>
+
+    <!-- Baner reklamowy -->
+    <div class="ad-banner" id="adBanner">
+        <a href="https://global.krakenrum.com/?noredirect=yes" target="_blank" class="ad-banner-link">
+            <img src="images/baner_01.png" alt="Baner" class="ad-banner-image">
+        </a>
+    </div>
+
+    <!-- Główny kontener menu -->
+    <div class="menu-viewer" id="menuViewer">
+        <div class="menu-container" id="menuContainer">
+            <!-- Wrapper który łączy obraz i hotspoty w jeden element -->
+            <div class="menu-image-wrapper" id="menuImageWrapper">
+                <img src="images/beirutbar_drinks.jpg" alt="Drinks Menu Kraken Bar" id="menuImage" class="menu-image">
+                
+                <!-- Kontener hotspotów - przyklejony do obrazu -->
+                <div class="hotspots-container" id="hotspotsContainer"></div>
+            </div>
+        </div>
+        
+        <!-- Animowany Kraken -->
+        <div class="kraken-animation" id="krakenAnimation">
+            <img src="images/tank.gif" alt="Kraken">
+        </div>
+        
+        <!-- Kontrolki do nawigacji -->
+        <div class="menu-controls">
+            <button id="foodBtn" class="food-btn" onclick="window.location.href='index.html'">Food</button>
+            <button id="zoomIn" class="control-btn">+</button>
+            <button id="zoomOut" class="control-btn">-</button>
+            <button id="resetView" class="control-btn">↺</button>
+            <button id="fullscreenBtn" class="control-btn" title="Pełny ekran">⛶</button>
+        </div>
+    </div>
+
+    <!-- Modal z iframe dla podstron -->
+    <div class="page-modal" id="pageModal">
+        <div class="page-modal-content">
+            <button class="page-modal-close" id="pageModalClose">&times;</button>
+            <iframe id="pageFrame" class="page-frame"></iframe>
+        </div>
+    </div>
+
+    <script src="js/config_drinks.js?v=21"></script>
+    <script src="js/main_simple.js?v=21"></script>
+</body>
+</html>

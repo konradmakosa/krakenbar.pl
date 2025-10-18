@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edytor Hotspotów - Drinks (Piksele)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a2a 0%, #1a1a4a 100%);
+            color: #f5f5f5;
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        h1 {
+            color: #c9a66b;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 0;
+            height: calc(100vh - 80px);
+        }
+        
+        .canvas-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        .canvas-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: crosshair;
+        }
+        
+        #menuImage {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border: 2px solid #c9a66b;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        
+        .hotspot-rect {
+            position: absolute;
+            border: 3px solid #c9a66b;
+            background: rgba(201, 166, 107, 0.2);
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(201, 166, 107, 0.5);
+        }
+        
+        .hotspot-label {
+            position: absolute;
+            top: -25px;
+            left: 0;
+            background: #c9a66b;
+            color: #0a0a2a;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        
+        .sidebar {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            overflow-y: auto;
+            height: 100%;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #c9a66b;
+            font-weight: bold;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #c9a66b;
+            border-radius: 5px;
+            color: #f5f5f5;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #c9a66b;
+            color: #0a0a2a;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background: #d4b57a;
+        }
+        
+        .btn-secondary {
+            background: rgba(201, 166, 107, 0.3);
+            color: #f5f5f5;
+        }
+        
+        .btn-danger {
+            background: #d9534f;
+            color: white;
+        }
+        
+        .hotspot-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border-left: 3px solid #c9a66b;
+        }
+        
+        .hotspot-item h4 {
+            color: #c9a66b;
+            margin-bottom: 5px;
+        }
+        
+        .hotspot-item small {
+            opacity: 0.7;
+            font-size: 0.85em;
+        }
+        
+        .hotspot-actions {
+            display: flex;
+            gap: 5px;
+            margin-top: 8px;
+        }
+        
+        .hotspot-actions button {
+            flex: 1;
+            padding: 6px;
+            font-size: 0.9em;
+        }
+        
+        #jsonOutput {
+            width: 100%;
+            min-height: 150px;
+            background: #0a0a2a;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            padding: 10px;
+            border: 1px solid #c9a66b;
+            border-radius: 5px;
+            font-size: 0.85em;
+            margin-top: 10px;
+        }
+        
+        .info-box {
+            background: rgba(201, 166, 107, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>🍹 Edytor Hotspotów - Drinks (Piksele)</h1>
+    
+    <div class="layout">
+        <div class="canvas-section">
+            <div class="info-box">
+                📝 <strong>Instrukcja:</strong> Kliknij i przeciągnij na obrazie aby zaznaczyć obszar. Wpisz nazwę i kliknij "Dodaj".
+            </div>
+            <div class="canvas-wrapper" id="canvasWrapper">
+                <img id="menuImage" src="images/beirutbar_drinks.jpg" alt="Drinks Menu">
+            </div>
+        </div>
+        
+        <div class="sidebar">
+            <h3 style="color: #c9a66b; margin-bottom: 15px;">Nowy Hotspot</h3>
+            
+            <div class="form-group">
+                <label>Nazwa dania:</label>
+                <input type="text" id="hotspotName" placeholder="np. Krewetki z Chorizo">
+            </div>
+            
+            <div class="form-group">
+                <label>Współrzędne (auto):</label>
+                <input type="text" id="hotspotCoords" readonly placeholder="x1, y1, x2, y2">
+            </div>
+            
+            <button class="btn" id="addBtn" onclick="addHotspot()">➕ Dodaj Hotspot</button>
+            <button class="btn btn-secondary" onclick="clearSelection()">🗑️ Wyczyść zaznaczenie</button>
+            
+            <h3 style="color: #c9a66b; margin: 20px 0 10px;">Lista Hotspotów</h3>
+            <div id="hotspotsList"></div>
+            
+            <h3 style="color: #c9a66b; margin: 20px 0 10px;">JSON Output</h3>
+            <textarea id="jsonOutput" readonly></textarea>
+            <button class="btn" onclick="copyJSON()">📋 Kopiuj JSON</button>
+            <button class="btn btn-secondary" onclick="downloadJSON()">💾 Pobierz JSON</button>
+            <button class="btn" onclick="generateHTMLFiles()">📄 Generuj pliki HTML</button>
+        </div>
+    </div>
+    
+    <script>
+        const img = document.getElementById('menuImage');
+        const wrapper = document.getElementById('canvasWrapper');
+        let hotspots = [];
+        let isDrawing = false;
+        let startX, startY;
+        let currentRect = null;
+        let editingIndex = null;
+        
+        // Rozmiary obrazu (z konfiguracji)
+        const IMAGE_WIDTH = 3000;
+        const IMAGE_HEIGHT = 15300;
+        
+        // Wczytaj istniejące hotspoty
+        fetch('data/hotspots_drinks.json')
+            .then(res => res.json())
+            .then(data => {
+                // Konwertuj z procentów na piksele jeśli potrzeba
+                hotspots = data.map(h => {
+                    if (h.x < 100 && h.y < 100) {
+                        // To są procenty, konwertuj na piksele
+                        return {
+                            name: h.name,
+                            id: h.id,
+                            x1: Math.round((h.x / 100) * IMAGE_WIDTH),
+                            y1: Math.round((h.y / 100) * IMAGE_HEIGHT),
+                            x2: Math.round(((h.x + h.width) / 100) * IMAGE_WIDTH),
+                            y2: Math.round(((h.y + h.height) / 100) * IMAGE_HEIGHT),
+                            page: h.page,
+                            description: h.description || ''
+                        };
+                    }
+                    return h;
+                });
+                updateList();
+                updateJSON();
+                drawHotspots();
+            })
+            .catch(() => console.log('Brak hotspotów'));
+        
+        // Rysowanie
+        img.addEventListener('mousedown', (e) => {
+            e.preventDefault(); // Zapobiega przeciąganiu obrazu
+            const rect = img.getBoundingClientRect();
+            startX = e.clientX - rect.left;
+            startY = e.clientY - rect.top;
+            isDrawing = true;
+            
+            currentRect = document.createElement('div');
+            currentRect.className = 'hotspot-rect';
+            currentRect.style.left = startX + 'px';
+            currentRect.style.top = startY + 'px';
+            currentRect.style.borderColor = editingIndex !== null ? '#ff6b6b' : '#c9a66b';
+            wrapper.appendChild(currentRect);
+        });
+        
+        img.addEventListener('mousemove', (e) => {
+            if (!isDrawing || !currentRect) return;
+            
+            e.preventDefault();
+            const rect = img.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const width = Math.abs(x - startX);
+            const height = Math.abs(y - startY);
+            
+            // Aktualizuj pozycję i rozmiar
+            currentRect.style.left = Math.min(startX, x) + 'px';
+            currentRect.style.top = Math.min(startY, y) + 'px';
+            currentRect.style.width = width + 'px';
+            currentRect.style.height = height + 'px';
+        });
+        
+        img.addEventListener('mouseup', (e) => {
+            if (!isDrawing) return;
+            
+            const rect = img.getBoundingClientRect();
+            const endX = e.clientX - rect.left;
+            const endY = e.clientY - rect.top;
+            
+            // Przelicz na piksele obrazu
+            const scaleX = IMAGE_WIDTH / img.offsetWidth;
+            const scaleY = IMAGE_HEIGHT / img.offsetHeight;
+            
+            const x1 = Math.round(Math.min(startX, endX) * scaleX);
+            const y1 = Math.round(Math.min(startY, endY) * scaleY);
+            const x2 = Math.round(Math.max(startX, endX) * scaleX);
+            const y2 = Math.round(Math.max(startY, endY) * scaleY);
+            
+            document.getElementById('hotspotCoords').value = `${x1}, ${y1}, ${x2}, ${y2}`;
+            
+            isDrawing = false;
+        });
+        
+        function addHotspot() {
+            const name = document.getElementById('hotspotName').value.trim();
+            const coords = document.getElementById('hotspotCoords').value;
+            
+            if (!name || !coords) {
+                alert('Wpisz nazwę i zaznacz obszar!');
+                return;
+            }
+            
+            const [x1, y1, x2, y2] = coords.split(',').map(n => parseInt(n.trim()));
+            
+            const id = name.toLowerCase()
+                .replace(/ą/g, 'a').replace(/ć/g, 'c').replace(/ę/g, 'e')
+                .replace(/ł/g, 'l').replace(/ń/g, 'n').replace(/ó/g, 'o')
+                .replace(/ś/g, 's').replace(/ź/g, 'z').replace(/ż/g, 'z')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-|-$/g, '');
+            
+            const hotspot = {
+                name,
+                id,
+                x1, y1, x2, y2,
+                page: `pages/${id}.html`,
+                description: ''
+            };
+            
+            if (editingIndex !== null) {
+                hotspots[editingIndex] = hotspot;
+                editingIndex = null;
+                document.getElementById('addBtn').textContent = '➕ Dodaj Hotspot';
+            } else {
+                hotspots.push(hotspot);
+            }
+            
+            document.getElementById('hotspotName').value = '';
+            document.getElementById('hotspotCoords').value = '';
+            clearSelection();
+            updateList();
+            updateJSON();
+            drawHotspots();
+        }
+        
+        function editHotspot(index) {
+            editingIndex = index;
+            const h = hotspots[index];
+            document.getElementById('hotspotName').value = h.name;
+            document.getElementById('hotspotCoords').value = `${h.x1}, ${h.y1}, ${h.x2}, ${h.y2}`;
+            document.getElementById('addBtn').textContent = '💾 Zapisz zmiany';
+            
+            // Narysuj prostokąt do edycji
+            clearSelection();
+            const scaleX = img.offsetWidth / IMAGE_WIDTH;
+            const scaleY = img.offsetHeight / IMAGE_HEIGHT;
+            
+            currentRect = document.createElement('div');
+            currentRect.className = 'hotspot-rect';
+            currentRect.style.left = (h.x1 * scaleX) + 'px';
+            currentRect.style.top = (h.y1 * scaleY) + 'px';
+            currentRect.style.width = ((h.x2 - h.x1) * scaleX) + 'px';
+            currentRect.style.height = ((h.y2 - h.y1) * scaleY) + 'px';
+            currentRect.style.borderColor = '#ff6b6b';
+            wrapper.appendChild(currentRect);
+        }
+        
+        function deleteHotspot(index) {
+            if (confirm('Usunąć ten hotspot?')) {
+                hotspots.splice(index, 1);
+                updateList();
+                updateJSON();
+                drawHotspots();
+            }
+        }
+        
+        function clearSelection() {
+            if (currentRect) {
+                currentRect.remove();
+                currentRect = null;
+            }
+        }
+        
+        function updateList() {
+            const list = document.getElementById('hotspotsList');
+            list.innerHTML = hotspots.map((h, i) => `
+                <div class="hotspot-item">
+                    <h4>${h.name}</h4>
+                    <small>ID: ${h.id}</small><br>
+                    <small>Piksele: (${h.x1}, ${h.y1}) → (${h.x2}, ${h.y2})</small>
+                    <div class="hotspot-actions">
+                        <button class="btn btn-secondary" onclick="editHotspot(${i})">✏️ Edytuj</button>
+                        <button class="btn btn-danger" onclick="deleteHotspot(${i})">🗑️ Usuń</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function updateJSON() {
+            const json = JSON.stringify(hotspots, null, 2);
+            document.getElementById('jsonOutput').value = json;
+        }
+        
+        function drawHotspots() {
+            // Usuń stare prostokąty
+            document.querySelectorAll('.hotspot-rect').forEach(el => {
+                if (el !== currentRect) el.remove();
+            });
+            
+            const scaleX = img.offsetWidth / IMAGE_WIDTH;
+            const scaleY = img.offsetHeight / IMAGE_HEIGHT;
+            
+            hotspots.forEach(h => {
+                const rect = document.createElement('div');
+                rect.className = 'hotspot-rect';
+                rect.style.left = (h.x1 * scaleX) + 'px';
+                rect.style.top = (h.y1 * scaleY) + 'px';
+                rect.style.width = ((h.x2 - h.x1) * scaleX) + 'px';
+                rect.style.height = ((h.y2 - h.y1) * scaleY) + 'px';
+                
+                const label = document.createElement('div');
+                label.className = 'hotspot-label';
+                label.textContent = h.name;
+                rect.appendChild(label);
+                
+                wrapper.appendChild(rect);
+            });
+        }
+        
+        function copyJSON() {
+            const output = document.getElementById('jsonOutput');
+            output.select();
+            document.execCommand('copy');
+            alert('JSON skopiowany!');
+        }
+        
+        function downloadJSON() {
+            const json = document.getElementById('jsonOutput').value;
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'hotspots_drinks.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        async function generateHTMLFiles() {
+            if (hotspots.length === 0) {
+                alert('Brak hotspotów do wygenerowania!');
+                return;
+            }
+            
+            // Wczytaj template.html
+            let templateContent = '';
+            try {
+                const response = await fetch('pages/template.html');
+                templateContent = await response.text();
+            } catch (error) {
+                alert('Błąd wczytywania template.html! Upewnij się, że plik istnieje.');
+                return;
+            }
+            
+            const pages = [];
+            
+            hotspots.forEach(h => {
+                // Użyj pełnego template.html
+                const html = templateContent;
+                
+                pages.push({
+                    filename: `${h.id}.html`,
+                    content: html
+                });
+            });
+            
+            // Wyślij do serwera
+            try {
+                const response = await fetch('http://localhost:8001/save-pages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ pages })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert(`✅ Zapisano ${result.count} plików w folderze pages/:\n${result.saved.join('\n')}`);
+                } else {
+                    alert('❌ Błąd podczas zapisywania plików');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Nie można połączyć z serwerem.\n\nUruchom serwer:\npython3 save_pages.py');
+            }
+        }
+        
+        // Przerysuj przy zmianie rozmiaru
+        window.addEventListener('resize', drawHotspots);
+    </script>
+</body>
+</html>
