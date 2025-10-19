@@ -637,6 +637,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
                 console.log('Hotspot clicked:', hotspot.name, hotspot.page);
                 
+                // Dodaj efekt wizualny kliknięcia
+                div.classList.add('clicked');
+                setTimeout(() => {
+                    div.classList.remove('clicked');
+                }, 300);
+                
                 if (MENU_CONFIG.hotspots.openInNewTab) {
                     window.open(hotspot.page, '_blank');
                 } else {
