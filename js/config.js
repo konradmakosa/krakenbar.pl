@@ -74,7 +74,7 @@ const MENU_CONFIG = {
         showOnHover: true,                  // Pokazuj podświetlenie przy najechaniu
         openInNewTab: false,                 // Otwieraj w nowej karcie (false = modal)
         animation: {
-            enabled: true,
+            enabled: false,
             duration: 500,        // Czas trwania animacji pojedynczego hotspotu (ms)
             overlap: 50,          // Nakładanie się animacji (ms)
             repeatInterval: 10000 // Powtarzanie animacji co X ms (10 sekund)

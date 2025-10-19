@@ -212,6 +212,7 @@
             
             <button class="btn" id="addBtn" onclick="addHotspot()">➕ Dodaj Hotspot</button>
             <button class="btn btn-secondary" onclick="clearSelection()">🗑️ Wyczyść zaznaczenie</button>
+            <button class="btn" onclick="loadHotspots()">🔄 Wczytaj hotspoty z JSON</button>
             
             <h3 style="color: #c9a66b; margin: 20px 0 10px;">Lista Hotspotów</h3>
             <div id="hotspotsList"></div>
@@ -233,36 +234,69 @@
         let currentRect = null;
         let editingIndex = null;
         
-        // Rozmiary obrazu (z konfiguracji)
-        const IMAGE_WIDTH = 3000;
-        const IMAGE_HEIGHT = 13200;
+        // Rozmiary obrazu - będą automatycznie pobrane po załadowaniu
+        let IMAGE_WIDTH = 3000;
+        let IMAGE_HEIGHT = 4700;
         
-        // Wczytaj istniejące hotspoty
-        fetch('data/hotspots_food.json')
-            .then(res => res.json())
-            .then(data => {
-                // Konwertuj z procentów na piksele jeśli potrzeba
-                hotspots = data.map(h => {
-                    if (h.x < 100 && h.y < 100) {
-                        // To są procenty, konwertuj na piksele
-                        return {
-                            name: h.name,
-                            id: h.id,
-                            x1: Math.round((h.x / 100) * IMAGE_WIDTH),
-                            y1: Math.round((h.y / 100) * IMAGE_HEIGHT),
-                            x2: Math.round(((h.x + h.width) / 100) * IMAGE_WIDTH),
-                            y2: Math.round(((h.y + h.height) / 100) * IMAGE_HEIGHT),
-                            page: h.page,
-                            description: h.description || ''
-                        };
+        // Pobierz faktyczne wymiary obrazu po załadowaniu
+        img.onload = function() {
+            IMAGE_WIDTH = img.naturalWidth;
+            IMAGE_HEIGHT = img.naturalHeight;
+            console.log(`✓ Obraz załadowany: ${IMAGE_WIDTH} x ${IMAGE_HEIGHT} px`);
+            document.querySelector('h1').textContent = `Edytor Hotspotów - Food (${IMAGE_WIDTH}x${IMAGE_HEIGHT}px)`;
+            
+            // Po załadowaniu obrazu, wczytaj i narysuj hotspoty
+            loadHotspots();
+        };
+        
+        // Funkcja do wczytywania hotspotów
+        function loadHotspots() {
+            console.log('Próba wczytania hotspotów...');
+            fetch('data/hotspots_food.json?' + Date.now()) // Cache bust
+                .then(res => {
+                    console.log('Response status:', res.status);
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
                     }
-                    return h;
+                    return res.text(); // Najpierw jako text
+                })
+                .then(text => {
+                    console.log('Otrzymano tekst, długość:', text.length);
+                    if (!text || text.length === 0) {
+                        throw new Error('Plik jest pusty!');
+                    }
+                    return JSON.parse(text);
+                })
+                .then(data => {
+                    console.log(`✓ Wczytano ${data.length} hotspotów`);
+                    // Konwertuj z procentów na piksele jeśli potrzeba
+                    hotspots = data.map(h => {
+                        if (h.x < 100 && h.y < 100) {
+                            // To są procenty, konwertuj na piksele
+                            return {
+                                name: h.name,
+                                id: h.id,
+                                x1: Math.round((h.x / 100) * IMAGE_WIDTH),
+                                y1: Math.round((h.y / 100) * IMAGE_HEIGHT),
+                                x2: Math.round(((h.x + h.width) / 100) * IMAGE_WIDTH),
+                                y2: Math.round(((h.y + h.height) / 100) * IMAGE_HEIGHT),
+                                page: h.page,
+                                description: h.description || ''
+                            };
+                        }
+                        return h;
+                    });
+                    updateList();
+                    updateJSON();
+                    drawHotspots();
+                    console.log('✓ Hotspoty narysowane na obrazie');
+                    alert(`✓ Wczytano ${data.length} hotspotów!`);
+                })
+                .catch((err) => {
+                    console.error('Błąd wczytywania hotspotów:', err);
+                    alert('Błąd: ' + err.message);
                 });
-                updateList();
-                updateJSON();
-                drawHotspots();
-            })
-            .catch(() => console.log('Brak hotspotów'));
+        }
         
         // Rysowanie
         img.addEventListener('mousedown', (e) => {

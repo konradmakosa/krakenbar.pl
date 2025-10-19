@@ -47,7 +47,7 @@ const MENU_CONFIG = {
         path: 'images/krakenbar_drinks.jpg',  // Ścieżka do obrazu menu napojów
         alt: 'Drinks Menu Kraken Bar',        // Tekst alternatywny
         width: 3000,   // Szerokość rzeczywista
-        height: 7895,  // Wysokość rzeczywista
+        height: 7985,  // Wysokość rzeczywista
     },
     
     // Ustawienia interakcji
@@ -74,7 +74,7 @@ const MENU_CONFIG = {
         showOnHover: true,                  // Pokazuj podświetlenie przy najechaniu
         openInNewTab: false,                 // Otwieraj w nowej karcie (false = modal)
         animation: {
-            enabled: true,
+            enabled: false,
             duration: 500,        // Czas trwania animacji pojedynczego hotspotu (ms)
             overlap: 50,          // Nakładanie się animacji (ms)
             repeatInterval: 10000 // Powtarzanie animacji co X ms (10 sekund)
