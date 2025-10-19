@@ -1,0 +1,242 @@
+[
+  {
+    "name": "sea food mix",
+    "id": "sea-food-mix",
+    "x1": 155,
+    "y1": 1857,
+    "x2": 1909,
+    "y2": 2260,
+    "page": "pages/sea-food-mix.html",
+    "description": ""
+  },
+  {
+    "name": "hot pan",
+    "id": "hot-pan",
+    "x1": 155,
+    "y1": 2492,
+    "x2": 1870,
+    "y2": 2889,
+    "page": "pages/hot-pan.html",
+    "description": ""
+  },
+  {
+    "name": "hot pan kalmary",
+    "id": "hot-pan-kalmary",
+    "x1": 163,
+    "y1": 3114,
+    "x2": 1861,
+    "y2": 3510,
+    "page": "pages/hot-pan-kalmary.html",
+    "description": ""
+  },
+  {
+    "name": "hot pan osmiorniczki",
+    "id": "hot-pan-osmiorniczki",
+    "x1": 148,
+    "y1": 3729,
+    "x2": 1875,
+    "y2": 4138,
+    "page": "pages/hot-pan-osmiorniczki.html",
+    "description": ""
+  },
+  {
+    "name": "osmiorniczki na ostro",
+    "id": "osmiorniczki-na-ostro",
+    "x1": 148,
+    "y1": 4329,
+    "x2": 1642,
+    "y2": 4787,
+    "page": "pages/osmiorniczki-na-ostro.html",
+    "description": ""
+  },
+  {
+    "name": "szprotki",
+    "id": "szprotki",
+    "x1": 1798,
+    "y1": 4357,
+    "x2": 2825,
+    "y2": 4712,
+    "page": "pages/szprotki.html",
+    "description": ""
+  },
+  {
+    "name": "cesarska z krewetkami",
+    "id": "cesarska-z-krewetkami",
+    "x1": 155,
+    "y1": 4958,
+    "x2": 1504,
+    "y2": 5402,
+    "page": "pages/cesarska-z-krewetkami.html",
+    "description": ""
+  },
+  {
+    "name": "sea food salad",
+    "id": "sea-food-salad",
+    "x1": 141,
+    "y1": 5593,
+    "x2": 1263,
+    "y2": 6002,
+    "page": "pages/sea-food-salad.html",
+    "description": ""
+  },
+  {
+    "name": "losos w ziolach",
+    "id": "losos-w-ziolach",
+    "x1": 155,
+    "y1": 6228,
+    "x2": 1236,
+    "y2": 6644,
+    "page": "pages/losos-w-ziolach.html",
+    "description": ""
+  },
+  {
+    "name": "patelnia boczniakow",
+    "id": "patelnia-boczniakow",
+    "x1": 328,
+    "y1": 6849,
+    "x2": 2854,
+    "y2": 7266,
+    "page": "pages/patelnia-boczniakow.html",
+    "description": ""
+  },
+  {
+    "name": "tatar z lososia",
+    "id": "tatar-z-lososia",
+    "x1": 204,
+    "y1": 7467,
+    "x2": 1518,
+    "y2": 7884,
+    "page": "pages/tatar-z-lososia.html",
+    "description": ""
+  },
+  {
+    "name": "tatar z matias",
+    "id": "tatar-z-matias",
+    "x1": 1632,
+    "y1": 7460,
+    "x2": 2857,
+    "y2": 7897,
+    "page": "pages/tatar-z-matias.html",
+    "description": ""
+  },
+  {
+    "name": "krewetki w tempurze",
+    "id": "krewetki-w-tempurze",
+    "x1": 134,
+    "y1": 8123,
+    "x2": 1431,
+    "y2": 8492,
+    "page": "pages/krewetki-w-tempurze.html",
+    "description": ""
+  },
+  {
+    "name": "krewetki z chorizo",
+    "id": "krewetki-z-chorizo",
+    "x1": 1440,
+    "y1": 8102,
+    "x2": 2973,
+    "y2": 8546,
+    "page": "pages/krewetki-z-chorizo.html",
+    "description": ""
+  },
+  {
+    "name": "mule na ostro",
+    "id": "mule-na-ostro",
+    "x1": 136,
+    "y1": 8758,
+    "x2": 1392,
+    "y2": 9168,
+    "page": "pages/mule-na-ostro.html",
+    "description": ""
+  },
+  {
+    "name": "mule w smietanowym",
+    "id": "mule-w-smietanowym",
+    "x1": 1414,
+    "y1": 8731,
+    "x2": 2995,
+    "y2": 9161,
+    "page": "pages/mule-w-smietanowym.html",
+    "description": ""
+  },
+  {
+    "name": "swieza ryba z grilla",
+    "id": "swieza-ryba-z-grilla",
+    "x1": 136,
+    "y1": 9393,
+    "x2": 1467,
+    "y2": 9823,
+    "page": "pages/swieza-ryba-z-grilla.html",
+    "description": ""
+  },
+  {
+    "name": "stynki",
+    "id": "stynki",
+    "x1": 1914,
+    "y1": 9372,
+    "x2": 2879,
+    "y2": 9796,
+    "page": "pages/stynki.html",
+    "description": ""
+  },
+  {
+    "name": "shrimp sandwich",
+    "id": "shrimp-sandwich",
+    "x1": 134,
+    "y1": 10021,
+    "x2": 1518,
+    "y2": 10451,
+    "page": "pages/shrimp-sandwich.html",
+    "description": ""
+  },
+  {
+    "name": "philly cheese steak",
+    "id": "philly-cheese-steak",
+    "x1": 155,
+    "y1": 10684,
+    "x2": 1700,
+    "y2": 11121,
+    "page": "pages/philly-cheese-steak.html",
+    "description": ""
+  },
+  {
+    "name": "tune burger",
+    "id": "tune-burger",
+    "x1": 1790,
+    "y1": 10677,
+    "x2": 2886,
+    "y2": 11121,
+    "page": "pages/tune-burger.html",
+    "description": ""
+  },
+  {
+    "name": "vege tacos",
+    "id": "vege-tacos",
+    "x1": 165,
+    "y1": 11312,
+    "x2": 1224,
+    "y2": 11783,
+    "page": "pages/vege-tacos.html",
+    "description": ""
+  },
+  {
+    "name": "shrimp tacos",
+    "id": "shrimp-tacos",
+    "x1": 1584,
+    "y1": 11326,
+    "x2": 2764,
+    "y2": 11804,
+    "page": "pages/shrimp-tacos.html",
+    "description": ""
+  },
+  {
+    "name": "zupa rybna",
+    "id": "zupa-rybna",
+    "x1": 940,
+    "y1": 11981,
+    "x2": 2006,
+    "y2": 12432,
+    "page": "pages/zupa-rybna.html",
+    "description": ""
+  }
+]

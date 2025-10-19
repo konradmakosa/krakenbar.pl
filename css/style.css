@@ -1,3 +1,42 @@
+/* Menu Navigation Buttons */
+.menu-navigation {
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+    background-color: var(--primary-color);
+    position: relative;
+    z-index: 100;
+}
+
+.menu-button {
+    background-color: #1a73e8; /* Google blue color */
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    margin: 0 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.menu-button:hover {
+    background-color: #1557b0;
+    transform: translateY(-2px);
+}
+
+.menu-button:active {
+    transform: translateY(0);
+}
+
+.menu-button.active {
+    background-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 /* Base Styles */
 :root {
     --primary-color: #0a0a2a;
@@ -361,9 +400,9 @@ body {
     min-width: 80px;
     height: 40px;
     border-radius: 20px;
-    background-color: var(--accent-color);
-    color: #0a0a2a;
-    border: 2px solid var(--accent-color);
+    background-color: #4a90e2;
+    color: #ffffff;
+    border: 2px solid #4a90e2;
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
@@ -374,8 +413,8 @@ body {
 }
 
 .drinks-btn:hover {
-    background-color: #d4b57a;
-    border-color: #d4b57a;
+    background-color: #357abd;
+    border-color: #357abd;
     transform: scale(1.05);
 }
 
@@ -385,9 +424,9 @@ body {
     min-width: 80px;
     height: 40px;
     border-radius: 20px;
-    background-color: var(--accent-color);
-    color: #0a0a2a;
-    border: 2px solid var(--accent-color);
+    background-color: #4a90e2;
+    color: #ffffff;
+    border: 2px solid #4a90e2;
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
@@ -398,8 +437,8 @@ body {
 }
 
 .food-btn:hover {
-    background-color: #d4b57a;
-    border-color: #d4b57a;
+    background-color: #357abd;
+    border-color: #357abd;
     transform: scale(1.05);
 }
 
