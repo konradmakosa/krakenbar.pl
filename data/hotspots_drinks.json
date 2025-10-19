@@ -1,0 +1,212 @@
+[
+  {
+    "name": "vedett",
+    "id": "vedett",
+    "x1": 73,
+    "y1": 131,
+    "x2": 2094,
+    "y2": 569,
+    "page": "pages/vedett.html",
+    "description": ""
+  },
+  {
+    "name": "zlote lwy",
+    "id": "zlote-lwy",
+    "x1": 80,
+    "y1": 793,
+    "x2": 2840,
+    "y2": 1268,
+    "page": "pages/zlote-lwy.html",
+    "description": ""
+  },
+  {
+    "name": "hoegaarden",
+    "id": "hoegaarden",
+    "x1": 124,
+    "y1": 1413,
+    "x2": 2830,
+    "y2": 1921,
+    "page": "pages/hoegaarden.html",
+    "description": ""
+  },
+  {
+    "name": "leffe",
+    "id": "leffe",
+    "x1": 102,
+    "y1": 2070,
+    "x2": 2840,
+    "y2": 2523,
+    "page": "pages/leffe.html",
+    "description": ""
+  },
+  {
+    "name": "flying cloud ipa",
+    "id": "flying-cloud-ipa",
+    "x1": 909,
+    "y1": 2733,
+    "x2": 2932,
+    "y2": 3148,
+    "page": "pages/flying-cloud-ipa.html",
+    "description": ""
+  },
+  {
+    "name": "paulaner",
+    "id": "paulaner",
+    "x1": 1822,
+    "y1": 3390,
+    "x2": 2983,
+    "y2": 3763,
+    "page": "pages/paulaner.html",
+    "description": ""
+  },
+  {
+    "name": "hendricks tonic",
+    "id": "hendricks-tonic",
+    "x1": 170,
+    "y1": 4861,
+    "x2": 2835,
+    "y2": 5276,
+    "page": "pages/hendricks-tonic.html",
+    "description": ""
+  },
+  {
+    "name": "mai tai",
+    "id": "mai-tai",
+    "x1": 231,
+    "y1": 5519,
+    "x2": 2908,
+    "y2": 5911,
+    "page": "pages/mai-tai.html",
+    "description": ""
+  },
+  {
+    "name": "release the kraken",
+    "id": "release-the-kraken",
+    "x1": 192,
+    "y1": 6153,
+    "x2": 2874,
+    "y2": 6554,
+    "page": "pages/release-the-kraken.html",
+    "description": ""
+  },
+  {
+    "name": "rum sour",
+    "id": "rum-sour",
+    "x1": 90,
+    "y1": 6801,
+    "x2": 2777,
+    "y2": 7179,
+    "page": "pages/rum-sour.html",
+    "description": ""
+  },
+  {
+    "name": "monkey sour",
+    "id": "monkey-sour",
+    "x1": 109,
+    "y1": 7419,
+    "x2": 2811,
+    "y2": 7830,
+    "page": "pages/monkey-sour.html",
+    "description": ""
+  },
+  {
+    "name": "appleton right hand",
+    "id": "appleton-right-hand",
+    "x1": 124,
+    "y1": 8072,
+    "x2": 2818,
+    "y2": 8510,
+    "page": "pages/appleton-right-hand.html",
+    "description": ""
+  },
+  {
+    "name": "mount fashioned",
+    "id": "mount-fashioned",
+    "x1": 189,
+    "y1": 8716,
+    "x2": 2849,
+    "y2": 9103,
+    "page": "pages/mount-fashioned.html",
+    "description": ""
+  },
+  {
+    "name": "kraken in the storm",
+    "id": "kraken-in-the-storm",
+    "x1": 231,
+    "y1": 9345,
+    "x2": 2917,
+    "y2": 9760,
+    "page": "pages/kraken-in-the-storm.html",
+    "description": ""
+  },
+  {
+    "name": "nuka nuka",
+    "id": "nuka-nuka",
+    "x1": 214,
+    "y1": 10003,
+    "x2": 2910,
+    "y2": 10413,
+    "page": "pages/nuka-nuka.html",
+    "description": ""
+  },
+  {
+    "name": "old cuban",
+    "id": "old-cuban",
+    "x1": 170,
+    "y1": 10646,
+    "x2": 2876,
+    "y2": 11061,
+    "page": "pages/old-cuban.html",
+    "description": ""
+  },
+  {
+    "name": "hemingway daiquiri",
+    "id": "hemingway-daiquiri",
+    "x1": 131,
+    "y1": 11313,
+    "x2": 2859,
+    "y2": 11723,
+    "page": "pages/hemingway-daiquiri.html",
+    "description": ""
+  },
+  {
+    "name": "bahama mama",
+    "id": "bahama-mama",
+    "x1": 185,
+    "y1": 11980,
+    "x2": 2903,
+    "y2": 12367,
+    "page": "pages/bahama-mama.html",
+    "description": ""
+  },
+  {
+    "name": "zombie",
+    "id": "zombie",
+    "x1": 104,
+    "y1": 12637,
+    "x2": 2881,
+    "y2": 13048,
+    "page": "pages/zombie.html",
+    "description": ""
+  },
+  {
+    "name": "pink sailor",
+    "id": "pink-sailor",
+    "x1": 124,
+    "y1": 13299,
+    "x2": 2828,
+    "y2": 13756,
+    "page": "pages/pink-sailor.html",
+    "description": ""
+  },
+  {
+    "name": "campari spritz",
+    "id": "campari-spritz",
+    "x1": 112,
+    "y1": 13952,
+    "x2": 1499,
+    "y2": 14419,
+    "page": "pages/campari-spritz.html",
+    "description": ""
+  }
+]
