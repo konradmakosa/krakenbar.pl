@@ -773,6 +773,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const pageModalClose = document.getElementById('pageModalClose');
     
     window.openPageModal = function(pageUrl) {
+        // Google Analytics - śledzenie otwarcia podstrony
+        if (typeof gtag !== 'undefined') {
+            const pageName = pageUrl.replace('pages/', '').replace('.html', '');
+            const pageTitle = pageName.split('-').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+            
+            gtag('event', 'page_view', {
+                page_title: 'Kraken Bar - ' + pageTitle,
+                page_location: window.location.origin + '/' + pageUrl,
+                page_path: '/' + pageUrl
+            });
+        }
+        
         pageFrame.src = pageUrl;
         pageModal.classList.add('active');
     };

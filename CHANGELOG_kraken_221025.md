@@ -396,11 +396,97 @@ getComputedStyle(document.documentElement).getPropertyValue('--vh')
 
 ---
 
+## 🔧 OPTYMALIZACJA GOOGLE ANALYTICS (22.10.2025 13:56)
+
+### Problem: GA nie śledziła pojedynczych dań
+- Podstrony otwierają się w modalu bez zmiany URL
+- GA widziała tylko `index.html`, nie poszczególne dania
+- Brak danych o popularności konkretnych pozycji menu
+
+### Rozwiązanie:
+
+#### 1. **Dodanie śledzenia eventów w JavaScript**
+
+**Plik:** `js/main_simple.js` (funkcja `openPageModal`)
+
+```javascript
+// Google Analytics - śledzenie otwarcia podstrony
+if (typeof gtag !== 'undefined') {
+    const pageName = pageUrl.replace('pages/', '').replace('.html', '');
+    const pageTitle = pageName.split('-').map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
+    
+    gtag('event', 'page_view', {
+        page_title: 'Kraken Bar - ' + pageTitle,
+        page_location: window.location.origin + '/' + pageUrl,
+        page_path: '/' + pageUrl
+    });
+}
+```
+
+### 📊 Co teraz widać w Google Analytics:
+
+**Strona główna:**
+- Odwiedziny: `krakenbar.pl/index.html`
+- Urządzenia, przeglądarki, lokalizacje
+
+**Pojedyncze dania (jako page_view events):**
+- `Kraken Bar - Appleton Right Hand` → `/pages/appleton-right-hand.html`
+- `Kraken Bar - Burger Classic` → `/pages/burger-classic.html`
+- `Kraken Bar - Fish And Chips` → `/pages/fish-and-chips.html`
+- **46+ różnych dań śledzone osobno!**
+
+### 🎯 Możliwości analizy:
+
+- ✅ **TOP 10 najpopularniejszych dań** 🏆
+- ✅ **Które dania nikt nie klika** (kandydaci do usunięcia)
+- ✅ **Ścieżki użytkowników** - co oglądają po kolei
+- ✅ **Czas spędzony na przeglądaniu menu**
+- ✅ **Porównanie popularności kategorii** (jedzenie vs. drinki)
+
+### 📈 Gdzie znaleźć w GA:
+`Events` → `page_view` → filtruj po `page_path` zawierającym `/pages/`
+
+---
+
+## ⚡ OPTYMALIZACJA DEPLOY.SH (22.10.2025 13:56)
+
+### Problem: Niepotrzebne transfery plików
+Deploy wysyłał pliki na FTP nawet jeśli się nie zmieniły.
+
+**Przyczyna:** `mirror --reverse` domyślnie porównuje tylko daty modyfikacji, nie zawartość plików.
+
+### Rozwiązanie:
+
+**Plik:** `deploy.sh` (linia 39)
+
+**BYŁO:**
+```bash
+mirror --reverse --delete --verbose \
+```
+
+**JEST:**
+```bash
+mirror --reverse --delete --verbose --only-newer \
+```
+
+### ✅ Efekt:
+
+Flaga `--only-newer` sprawdza:
+- ✅ Datę modyfikacji
+- ✅ Rozmiar pliku
+- ✅ Pomija transfer jeśli plik jest identyczny
+
+**Następny deploy będzie szybszy** - tylko faktycznie zmienione pliki zostaną wysłane! 🚀
+
+---
+
 **Data wykonania:** 22.10.2025  
 **Autor zmian:** Cascade AI + Konrad  
 **Projekt:** Kraken Bar Menu  
 **Commit:** 86fbec5  
-**Zmienione pliki:** 55  
+**Zmienione pliki:** 57 (55 + js/main_simple.js + deploy.sh)  
 **Wdrożono na:** FTP (krakenbar)
 
 ---

@@ -36,7 +36,7 @@ set ftp:ssl-allow no
 open -u $FTP_USER,$FTP_PASS $FTP_HOST
 lcd $LOCAL_DIR
 cd $REMOTE_DIR
-mirror --reverse --delete --verbose \
+mirror --reverse --delete --verbose --only-newer \
   --exclude .git/ \
   --exclude .DS_Store \
   --exclude deploy.sh \
