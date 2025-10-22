@@ -117,11 +117,20 @@ git clone https://github.com/konradmakosa/kraken.git
 #### Backup danych klienta:
 
 ```bash
-# Pobierz backup danych z serwera (spakuje do ZIP)
+# Backup tylko danych klienta (pages/data/)
 ./backup_data.sh
 ```
+**Utworzy:** `backup_pages_data_YYYYMMDD_HHMMSS.zip`
 
-**Utworzy plik ZIP:** `backup_pages_data_YYYYMMDD_HHMMSS.zip`
+```bash
+# Pełny backup całego serwisu
+./backup_full.sh
+```
+**Utworzy:** `backup_full_krakenbar_YYYYMMDD_HHMMSS.zip`
+
+**Różnice:**
+- `backup_data.sh` - tylko JSONy z danymi klienta (szybki, mały)
+- `backup_full.sh` - cały serwis: HTML, CSS, JS, obrazki, PHP, dane (wolniejszy, większy)
 
 #### Struktura danych klienta:
 

@@ -554,21 +554,29 @@ bye
 - ✅ Dodano komunikaty o postępie deploymentu
 - ✅ Dane klienta są teraz chronione przed usunięciem
 
-#### 2. **backup_data.sh** - Nowy skrypt do backupu
+#### 2. **backup_data.sh** - Backup danych klienta
 - ✅ Utworzono skrypt do pobierania backupu danych z serwera
 - ✅ Automatyczne pakowanie do ZIP: `backup_pages_data_YYYYMMDD_HHMMSS.zip`
 - ✅ Raport z liczby plików i rozmiaru archiwum
 - ✅ Automatyczne usuwanie katalogu tymczasowego
+- ✅ Obsługa sytuacji gdy `pages/data/` nie istnieje na serwerze
+
+#### 2b. **backup_full.sh** - Pełny backup serwisu
+- ✅ Utworzono skrypt do pełnego backupu całego serwisu
+- ✅ Pobiera wszystkie pliki: HTML, CSS, JS, obrazki, PHP, dane
+- ✅ Pakowanie do ZIP: `backup_full_krakenbar_YYYYMMDD_HHMMSS.zip`
+- ✅ Raport z liczby plików i rozmiaru archiwum
 
 #### 3. **.gitignore** - Backup danych na GitHubie
 - ✅ Katalog `pages/data/` **NIE jest wykluczony** z gita
 - ✅ Pliki JSON będą commitowane jako backup
 - ✅ GitHub służy jako dodatkowe zabezpieczenie danych klienta
-- ✅ Dodano wykluczenie lokalnych backupów ZIP: `backup_pages_data_*.zip`
+- ✅ Dodano wykluczenie lokalnych backupów ZIP: `backup_pages_data_*.zip`, `backup_full_krakenbar_*.zip`
 
 #### 4. **README.md** - Dokumentacja deploymentu
 - ✅ Dodano sekcję o bezpiecznym deploymencie
-- ✅ Instrukcje użycia `deploy.sh` i `backup_data.sh`
+- ✅ Instrukcje użycia `deploy.sh`, `backup_data.sh` i `backup_full.sh`
+- ✅ Wyjaśnienie różnic między backupami (dane vs. pełny)
 - ✅ Wyjaśnienie struktury danych klienta
 - ✅ Przykład dry-run przed deploymentem
 

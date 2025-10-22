@@ -6,4 +6,6 @@ node_modules/
 
 # Backupy lokalne
 backup_pages_data_*.zip
+backup_full_krakenbar_*.zip
 backup_temp_*
+backup_full_temp_*
