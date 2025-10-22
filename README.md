@@ -93,8 +93,78 @@ git clone https://github.com/konradmakosa/kraken.git
 
 ## Deployment
 
-### FTP
-Wrzuć wszystkie pliki na serwer FTP zachowując strukturę katalogów.
+### FTP - Bezpieczny deploy z ochroną danych klienta
+
+**⚠️ WAŻNE:** Skrypt `deploy.sh` używa dwukierunkowej synchronizacji, aby chronić dane wprowadzone przez klienta!
+
+#### Jak działa deploy:
+
+1. **Pobiera dane klienta z serwera** (`pages/data/`)
+   - JSONy z konfiguracją podstron
+   - Tworzone dynamicznie przez `save.php` na serwerze
+
+2. **Wysyła pliki na serwer** (z wykluczeniem `pages/data/`)
+   - Pliki HTML, CSS, JS
+   - **NIE nadpisuje** danych klienta
+
+#### Użycie:
+
+```bash
+# Deploy na serwer FTP
+./deploy.sh
+```
+
+#### Backup danych klienta:
+
+```bash
+# Pobierz backup danych z serwera
+./backup_data.sh
+```
+
+**Utworzy katalog:** `backup_pages_data_YYYYMMDD_HHMMSS/`
+
+#### Struktura danych klienta:
+
+```
+pages/
+├── data/              ← DANE KLIENTA (serwer + backup w git)
+│   ├── {page1}.json   ← Konfiguracja podstrony 1
+│   ├── {page2}.json   ← Konfiguracja podstrony 2
+│   └── ...
+├── save.php           ← Skrypt do zapisu danych
+├── load.php           ← Skrypt do odczytu danych
+└── *.html             ← Strony HTML
+```
+
+**⚠️ WAŻNE:** Pliki JSON z `pages/data/` są commitowane do GitHuba jako backup!
+
+#### Workflow: Deploy + Backup na GitHubie
+
+```bash
+# 1. Deploy (pobierze dane z serwera i wyśle zmiany)
+./deploy.sh
+
+# 2. Backup danych na GitHubie
+git add pages/data/
+git commit -m "Backup danych klienta $(date +%Y-%m-%d)"
+git push
+
+# 3. Gotowe! Dane są bezpieczne na serwerze i w repozytorium
+```
+
+#### Test przed deploymentem (dry-run):
+
+```bash
+# Sprawdź co zostanie zmienione (bez wykonywania)
+lftp -c "
+set ftp:ssl-allow no
+open -u konrad@beirutbar.pl,5147raRA!@#$ beirut.home.pl
+lcd /Users/konradmakosa/Documents/galkowski/menu\ www/krakenbar.pl
+cd /krakenbar
+mirror --reverse --delete --dry-run --verbose
+bye
+"
+```
 
 ### GitHub Pages
 1. Wejdź w Settings → Pages

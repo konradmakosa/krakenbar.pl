@@ -402,3 +402,190 @@ getComputedStyle(document.documentElement).getPropertyValue('--vh')
 **Commit:** 86fbec5  
 **Zmienione pliki:** 55  
 **Wdrożono na:** FTP (krakenbar)
+
+---
+
+## 🚨 KRYTYCZNY PROBLEM - KATALOG `pages/data/` (22.10.2025)
+
+### ❌ Problem: Deploy może usunąć dane klienta z serwera
+
+**Co może się stać:**
+- Skrypt `deploy.sh` używa `mirror --reverse --delete` 
+- Katalog `pages/data/` z JSONami **nie istnieje lokalnie** (tworzony dynamicznie przez `save.php`)
+- Podczas deploymentu katalog może zostać **usunięty z serwera FTP**
+- **Utrata danych wprowadzonych przez klienta** (pliki JSON z konfiguracją podstron)
+
+**Potencjalny output z deploymentu:**
+```
+Removing old directory `pages/data/'
+```
+
+### 📋 Jak działa system danych klienta
+
+**Pliki odpowiedzialne za dane:**
+- `pages/save.php` - zapisuje dane podstron do `pages/data/{page}.json`
+- `pages/load.php` - wczytuje dane z plików JSON
+- `pages/template.html` - szablon strony z edycją (5x klik → hasło → edycja)
+- Katalog `pages/data/` jest tworzony automatycznie przez PHP na serwerze
+
+**Jak to działa:**
+1. Użytkownik otwiera stronę (np. `appleton-right-hand.html`)
+2. Kliknie 5x w lewy górny róg → pojawi się przycisk "🔧 Edytuj"
+3. Wprowadzi hasło edycji
+4. Zmieni tekst/zdjęcie i kliknie "💾 Zapisz"
+5. JavaScript wysyła dane do `save.php` → zapisuje do `pages/data/appleton-right-hand.json`
+
+**Struktura danych:**
+```
+pages/
+├── data/              ← DANE KLIENTA (serwer + backup w git!)
+│   ├── {page1}.json   ← { "image": "base64...", "text": "opis" }
+│   ├── {page2}.json
+│   └── ...
+├── save.php           ← Zapisuje JSONy
+├── load.php           ← Wczytuje JSONy
+├── template.html      ← Szablon z edycją
+└── *.html             ← Strony oparte na template
+```
+
+### ✅ Rozwiązanie - Dwukierunkowa synchronizacja
+
+#### Aktualizacja `deploy.sh`
+
+**Nowy mechanizm deploymentu:**
+
+**Krok 1: Pobierz dane klienta z serwera**
+```bash
+# Pobierz katalog pages/data/ z serwera (dane klienta)
+lftp -c "
+set ftp:ssl-allow no
+open -u $FTP_USER,$FTP_PASS $FTP_HOST
+lcd $LOCAL_DIR
+cd $REMOTE_DIR
+mirror --verbose pages/data/ pages/data/
+bye
+"
+```
+
+**Krok 2: Wyślij pliki na serwer (z wykluczeniem danych klienta)**
+```bash
+# Wyślij pliki na serwer (z wykluczeniem pages/data/)
+lftp -c "
+set ftp:ssl-allow no
+open -u $FTP_USER,$FTP_PASS $FTP_HOST
+lcd $LOCAL_DIR
+cd $REMOTE_DIR
+mirror --reverse --delete --verbose \
+  --exclude .git/ \
+  --exclude .DS_Store \
+  --exclude deploy.sh \
+  --exclude .gitignore \
+  --exclude README.md \
+  --exclude-glob *.py \
+  --exclude-glob *.md \
+  --exclude pages/data/
+bye
+"
+```
+
+**Efekt:**
+- ✅ **Przed każdym deploymentem** pobiera aktualne dane klienta z serwera
+- ✅ Lokalnie zawsze masz najnowsze JSONy wprowadzone przez klienta
+- ✅ Upload **nie nadpisuje** katalogu `pages/data/` na serwerze
+- ✅ Dane klienta są bezpieczne i zawsze zsynchronizowane
+
+### ⚠️ UWAGA - Weryfikacja przed wdrożeniem
+
+**Przed wdrożeniem tej zmiany sprawdź na serwerze FTP:**
+1. Czy katalog `pages/data/` istnieje
+2. Czy zawiera pliki JSON z danymi klienta
+3. Jeśli tak - **KONIECZNIE zrób backup** przed pierwszym deploymentem
+
+**Backup danych:**
+```bash
+# Pobierz backup danych z serwera
+lftp -c "
+set ftp:ssl-allow no
+open -u konrad@beirutbar.pl,5147raRA!@#$ beirut.home.pl
+cd /krakenbar
+mirror --verbose pages/data/ backup_pages_data_$(date +%Y%m%d)/
+bye
+"
+```
+
+### 📝 Zalecenia na przyszłość
+
+1. **Zawsze** dodawaj katalogi z danymi klienta do `--exclude` w deploy.sh
+2. **Nigdy** nie używaj `--delete` bez dokładnej weryfikacji co zostanie usunięte
+3. Rozważ użycie `--dry-run` przed właściwym deploymentem:
+   ```bash
+   mirror --reverse --delete --dry-run --verbose
+   ```
+4. **Regularnie commituj `pages/data/` do GitHuba jako backup:**
+   ```bash
+   ./deploy.sh              # Pobierze dane z serwera
+   git add pages/data/      # Dodaj JSONy do commita
+   git commit -m "Backup danych klienta $(date +%Y-%m-%d)"
+   git push                 # Wyślij na GitHuba
+   ```
+5. Po każdym deploymencie sprawdź czy dane zostały pobrane: `ls -la pages/data/`
+
+### 🔍 Jak sprawdzić czy dane są bezpieczne
+
+**Test przed deploymentem:**
+```bash
+# Sprawdź co zostanie usunięte (dry-run)
+lftp -c "
+set ftp:ssl-allow no
+open -u konrad@beirutbar.pl,5147raRA!@#$ beirut.home.pl
+lcd /Users/konradmakosa/Documents/galkowski/menu\ www/krakenbar.pl
+cd /krakenbar
+mirror --reverse --delete --dry-run --verbose
+bye
+"
+```
+
+**Szukaj w output:**
+- ❌ `Removing directory pages/data` - NIEBEZPIECZNE!
+- ❌ `Removing file pages/data/*.json` - NIEBEZPIECZNE!
+- ✅ Brak komunikatów o usuwaniu `pages/data/` - OK
+
+### ✅ Wdrożone zmiany (22.10.2025)
+
+#### 1. **deploy.sh** - Dwukierunkowa synchronizacja
+- ✅ Dodano KROK 1: Pobieranie `pages/data/` z serwera przed deploymentem
+- ✅ Dodano KROK 2: Upload z wykluczeniem `--exclude pages/data/`
+- ✅ Dodano komunikaty o postępie deploymentu
+- ✅ Dane klienta są teraz chronione przed usunięciem
+
+#### 2. **backup_data.sh** - Nowy skrypt do backupu
+- ✅ Utworzono skrypt do pobierania backupu danych z serwera
+- ✅ Automatyczne nazewnictwo z datą: `backup_pages_data_YYYYMMDD_HHMMSS/`
+- ✅ Raport z liczby pobranych plików
+
+#### 3. **.gitignore** - Backup danych na GitHubie
+- ✅ Katalog `pages/data/` **NIE jest wykluczony** z gita
+- ✅ Pliki JSON będą commitowane jako backup
+- ✅ GitHub służy jako dodatkowe zabezpieczenie danych klienta
+
+#### 4. **README.md** - Dokumentacja deploymentu
+- ✅ Dodano sekcję o bezpiecznym deploymencie
+- ✅ Instrukcje użycia `deploy.sh` i `backup_data.sh`
+- ✅ Wyjaśnienie struktury danych klienta
+- ✅ Przykład dry-run przed deploymentem
+
+### 📊 Podsumowanie zabezpieczeń
+
+**Przed zmianami:**
+- ❌ Deploy mógł usunąć `pages/data/` z serwera
+- ❌ Brak backupu danych klienta
+- ❌ Brak dokumentacji o ryzyku
+
+**Po zmianach:**
+- ✅ Deploy pobiera dane przed uploadem
+- ✅ Deploy nie nadpisuje `pages/data/`
+- ✅ Skrypt do łatwego backupu
+- ✅ Pełna dokumentacja w README
+- ✅ Dane klienta backupowane na GitHubie
+
+---
