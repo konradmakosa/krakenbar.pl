@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kraken Bar - Danie</title>
+    
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CDW1EMWRQV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CDW1EMWRQV');
+</script>
+    
     <style>
         * {
             margin: 0;
@@ -279,7 +290,7 @@
     
     <!-- Główna zawartość -->
     <div class="content-container">
-        <img id="dishImage" class="dish-image" src="../images/zaslepka.jpg" alt="Danie">
+        <img id="dishImage" class="dish-image" src="../images/zaslepka.jpg" alt="Danie" style="opacity: 0;">
         <div class="dish-description">
             <div id="dishText" class="typewriter"></div>
         </div>
@@ -452,6 +463,11 @@
             const dishText = document.getElementById('dishText');
             
             dishImage.src = data.image;
+            
+            // Pokaż obrazek po załadowaniu
+            dishImage.onload = function() {
+                dishImage.style.opacity = '1';
+            };
             typeWriter(data.text, dishText);
         }
         

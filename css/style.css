@@ -1,3 +1,9 @@
+/* Mobile Viewport Fix
+ * Używamy dvh (dynamic viewport height) zamiast vh
+ * dvh automatycznie uwzględnia dynamiczne paski adresu na mobile
+ * Fallback na vh dla starszych przeglądarek
+ */
+
 /* Menu Navigation Buttons */
 .menu-navigation {
     display: flex;
@@ -59,7 +65,6 @@
 html, body {
     height: 100%;
     overflow: hidden;
-    position: fixed;
     width: 100%;
     touch-action: none;
     margin: 0;
@@ -115,9 +120,9 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 15vh;
-    min-height: 100px;
-    background-color: #000000;
+    height: 15dvh; /* Dynamic viewport height (nowoczesne) */
+    height: calc(var(--vh, 1vh) * 15); /* JS fallback - MUSI BYĆ OSTATNI */
+    background-color: #96a6b3;
     border-bottom: 2px solid var(--accent-color);
     z-index: 200;
     display: flex;
@@ -133,15 +138,15 @@ body {
     align-items: center;
     width: 100%;
     height: 100%;
-    min-height: 100px;
     text-decoration: none;
 }
 
 .ad-banner-image {
     max-width: 100%;
-    max-height: 15vh;
     width: auto;
-    height: 100%;
+    height: 15vh; /* Fallback dla starych przeglądarek */
+    height: 15dvh; /* Dynamic viewport height (nowoczesne) */
+    height: calc(var(--vh, 1vh) * 15); /* JS fallback - MUSI BYĆ OSTATNI */
     object-fit: contain;
     object-position: bottom;
     transition: opacity 0.3s ease;
@@ -157,10 +162,14 @@ body {
 .page-modal {
     display: none;
     position: fixed;
-    top: 15vh;
+    top: 15vh; /* Fallback dla starych przeglądarek */
+    top: 15dvh; /* Dynamic viewport height (nowoczesne) */
+    top: calc(var(--vh, 1vh) * 15); /* JS fallback - MUSI BYĆ OSTATNI */
     left: 0;
     width: 100%;
-    height: 85vh;
+    height: 85vh; /* Fallback dla starych przeglądarek */
+    height: 85dvh; /* Dynamic viewport height (nowoczesne) */
+    height: calc(var(--vh, 1vh) * 85); /* JS fallback - MUSI BYĆ OSTATNI */
     background-color: rgba(0, 0, 0, 0.9);
     z-index: 300;
     justify-content: center;
@@ -213,10 +222,14 @@ body {
 /* Menu Viewer */
 .menu-viewer {
     position: fixed;
-    top: 15vh;
+    top: 15vh; /* Fallback dla starych przeglądarek */
+    top: 15dvh; /* Dynamic viewport height (nowoczesne) */
+    top: calc(var(--vh, 1vh) * 15); /* JS fallback - MUSI BYĆ OSTATNI */
     left: 0;
     width: 100%;
-    height: 85vh;
+    height: 85vh; /* Fallback dla starych przeglądarek */
+    height: 85dvh; /* Dynamic viewport height (nowoczesne) */
+    height: calc(var(--vh, 1vh) * 85); /* JS fallback - MUSI BYĆ OSTATNI */
     overflow: hidden;
     display: flex;
     justify-content: center;

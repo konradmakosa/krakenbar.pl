@@ -18,8 +18,12 @@ class SavePagesHandler(SimpleHTTPRequestHandler):
             os.makedirs(pages_dir, exist_ok=True)
             
             saved_files = []
+            skipped_files = []
             for page in data['pages']:
                 filename = os.path.join(pages_dir, page['filename'])
+                if os.path.exists(filename):
+                    skipped_files.append(page['filename'])
+                    continue
                 with open(filename, 'w', encoding='utf-8') as f:
                     f.write(page['content'])
                 saved_files.append(page['filename'])
@@ -32,7 +36,9 @@ class SavePagesHandler(SimpleHTTPRequestHandler):
             response = {
                 'success': True,
                 'saved': saved_files,
-                'count': len(saved_files)
+                'count': len(saved_files),
+                'skipped': skipped_files,
+                'skipped_count': len(skipped_files)
             }
             self.wfile.write(json.dumps(response).encode('utf-8'))
         else:

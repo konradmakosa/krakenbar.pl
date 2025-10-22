@@ -538,7 +538,14 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert(`✅ Zapisano ${result.count} plików w folderze pages/:\n${result.saved.join('\n')}`);
+                    let message = `✅ Zapisano ${result.count} nowych plików w folderze pages/`;
+                    if (result.saved.length > 0) {
+                        message += `:\n${result.saved.join('\n')}`;
+                    }
+                    if (result.skipped_count > 0) {
+                        message += `\n\n⚠️ Pominięto ${result.skipped_count} istniejących plików:\n${result.skipped.join('\n')}`;
+                    }
+                    alert(message);
                 } else {
                     alert('❌ Błąd podczas zapisywania plików');
                 }

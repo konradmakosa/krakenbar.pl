@@ -1,3 +1,35 @@
+// Fix dla viewport height na mobile (fallback dla dvh)
+function setRealViewportHeight() {
+    // Użyj visualViewport jeśli dostępne (lepsze dla mobile)
+    const height = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    const vh = height * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    console.log('🔧 Viewport fix:', {
+        visualViewport: window.visualViewport ? window.visualViewport.height : 'not supported',
+        innerHeight: window.innerHeight,
+        usedHeight: height,
+        vh: vh,
+        vhPx: `${vh}px`,
+        banner15vh: vh * 15,
+        viewer85vh: vh * 85
+    });
+}
+
+// Ustaw przy załadowaniu i przy zmianie orientacji/rozmiaru
+setRealViewportHeight();
+window.addEventListener('resize', setRealViewportHeight);
+window.addEventListener('orientationchange', setRealViewportHeight);
+window.addEventListener('scroll', setRealViewportHeight); // Firefox fix
+
+// Dodatkowe nasłuchiwanie dla visualViewport
+if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', setRealViewportHeight);
+    window.visualViewport.addEventListener('scroll', setRealViewportHeight);
+}
+
+// Wymuszenie update po 500ms (gdy pasek adresu się schowa)
+setTimeout(setRealViewportHeight, 500);
+
 // Prosty viewer - tylko obraz + hotspoty, bez animacji
 console.log('=== main_simple.js START ===');
 console.log('MENU_CONFIG:', MENU_CONFIG);
