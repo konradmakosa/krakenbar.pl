@@ -3,3 +3,7 @@
 __pycache__/
 node_modules/
 .env
+
+# Backupy lokalne
+backup_pages_data_*.zip
+backup_temp_*

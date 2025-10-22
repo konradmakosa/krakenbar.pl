@@ -503,14 +503,10 @@ bye
 
 **Backup danych:**
 ```bash
-# Pobierz backup danych z serwera
-lftp -c "
-set ftp:ssl-allow no
-open -u konrad@beirutbar.pl,5147raRA!@#$ beirut.home.pl
-cd /krakenbar
-mirror --verbose pages/data/ backup_pages_data_$(date +%Y%m%d)/
-bye
-"
+# Pobierz backup danych z serwera (spakuje do ZIP)
+./backup_data.sh
+
+# Utworzy plik: backup_pages_data_YYYYMMDD_HHMMSS.zip
 ```
 
 ### 📝 Zalecenia na przyszłość
@@ -560,13 +556,15 @@ bye
 
 #### 2. **backup_data.sh** - Nowy skrypt do backupu
 - ✅ Utworzono skrypt do pobierania backupu danych z serwera
-- ✅ Automatyczne nazewnictwo z datą: `backup_pages_data_YYYYMMDD_HHMMSS/`
-- ✅ Raport z liczby pobranych plików
+- ✅ Automatyczne pakowanie do ZIP: `backup_pages_data_YYYYMMDD_HHMMSS.zip`
+- ✅ Raport z liczby plików i rozmiaru archiwum
+- ✅ Automatyczne usuwanie katalogu tymczasowego
 
 #### 3. **.gitignore** - Backup danych na GitHubie
 - ✅ Katalog `pages/data/` **NIE jest wykluczony** z gita
 - ✅ Pliki JSON będą commitowane jako backup
 - ✅ GitHub służy jako dodatkowe zabezpieczenie danych klienta
+- ✅ Dodano wykluczenie lokalnych backupów ZIP: `backup_pages_data_*.zip`
 
 #### 4. **README.md** - Dokumentacja deploymentu
 - ✅ Dodano sekcję o bezpiecznym deploymencie

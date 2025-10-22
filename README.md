@@ -117,11 +117,11 @@ git clone https://github.com/konradmakosa/kraken.git
 #### Backup danych klienta:
 
 ```bash
-# Pobierz backup danych z serwera
+# Pobierz backup danych z serwera (spakuje do ZIP)
 ./backup_data.sh
 ```
 
-**Utworzy katalog:** `backup_pages_data_YYYYMMDD_HHMMSS/`
+**Utworzy plik ZIP:** `backup_pages_data_YYYYMMDD_HHMMSS.zip`
 
 #### Struktura danych klienta:
 

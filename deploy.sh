@@ -16,9 +16,15 @@ set ftp:ssl-allow no
 open -u $FTP_USER,$FTP_PASS $FTP_HOST
 lcd $LOCAL_DIR
 cd $REMOTE_DIR
-mirror --verbose pages/data/ pages/data/
+mirror --verbose --no-perms pages/data/ pages/data/ || exit 0
 bye
-"
+" 2>&1 | tee /tmp/deploy_log.txt
+
+# Sprawdź czy katalog istnieje
+if grep -q "No such file or directory" /tmp/deploy_log.txt; then
+    echo "   ℹ️  Katalog pages/data/ nie istnieje jeszcze na serwerze (to normalne)"
+fi
+rm -f /tmp/deploy_log.txt
 
 echo ""
 echo "🔼 KROK 2: Wysyłanie plików na serwer..."
