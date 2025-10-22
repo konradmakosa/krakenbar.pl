@@ -1,12 +1,13 @@
-# Zmiany w projekcie Beirut Bar - 21-22.10.2025
+# Zmiany w projekcie Kraken Bar - 22.10.2025
 
 ## 🎯 Cel zmian
 1. Naprawienie migania obrazka zaslepki w stronach HTML
 2. Naprawienie białej przerwy i przesunięcia na Firefox Mobile (Android)
+3. Dodanie Google Analytics do wszystkich podstron
 
 ---
 
-## 📝 ZMIANY RĘCZNE (do skopiowania do drugiego projektu)
+## 📝 WYKONANE ZMIANY
 
 ### 1. **css/style.css**
 
@@ -315,41 +316,60 @@ python3 fix_image_flash.py
 
 ---
 
-### 2. **fix_mobile_viewport.py** (już istnieje w projekcie)
-Naprawia viewport na mobile (ale NIE UŻYWAJ GO - zmiany CSS lepiej zrobić ręcznie)
+### 2. **add_analytics.py**
+Dodaje Google Analytics do wszystkich plików HTML
+
+```bash
+python3 add_analytics.py
+```
+
+**Co robi:**
+- Dodaje kod Google Analytics (G-CDW1EMWRQV) do wszystkich stron w `pages/`
+- Wstawia kod po `</title>` przed `<style>`
+- Pomija pliki które już mają GA
+- Zmodyfikowano **46 plików HTML** + template.html
 
 ---
 
-## 📋 INSTRUKCJA DLA DRUGIEGO PROJEKTU
+## 📋 PODSUMOWANIE WYKONANYCH ZMIAN
 
-### Krok 1: Skopiuj skrypty
-```bash
-cp fix_image_flash.py /ścieżka/do/drugiego/projektu/
-```
+### ✅ Zmiany w CSS (`css/style.css`)
+- Dodano komentarz o mobile viewport fix
+- Usunięto `position: fixed` z `html, body`
+- Zaktualizowano `.ad-banner` - dodano dvh i calc(var(--vh))
+- Zaktualizowano `.ad-banner-link` - usunięto min-height
+- Zaktualizowano `.ad-banner-image` - dodano dvh i calc(var(--vh))
+- Zaktualizowano `.page-modal` - dodano dvh i calc(var(--vh))
+- Zaktualizowano `.menu-viewer` - dodano dvh i calc(var(--vh))
 
-### Krok 2: Zmiany ręczne w CSS
-Otwórz `css/style.css` i zastosuj zmiany z sekcji **"ZMIANY RĘCZNE"** punkt 1 (A-G)
+### ✅ Zmiany w JavaScript (`js/main_simple.js`)
+- Dodano funkcję `setRealViewportHeight()` na początku pliku
+- Ustawia zmienną CSS `--vh` na podstawie visualViewport
+- Nasłuchiwanie na resize, orientationchange, scroll
+- Wsparcie dla visualViewport API
 
-### Krok 3: Zmiany w JavaScript
-Otwórz `js/main_simple.js` i dodaj kod z sekcji **"ZMIANY RĘCZNE"** punkt 2 NA POCZĄTKU pliku
+### ✅ Zmiany w HTML (46 plików w `pages/`)
+- Dodano `style="opacity: 0;"` do obrazków
+- Dodano `dishImage.onload` do pokazania obrazka
+- Dodano `transition: opacity 0.3s` w CSS
+- Dodano Google Analytics do wszystkich stron
 
-### Krok 4: Uruchom skrypt dla stron HTML
-```bash
-cd /ścieżka/do/drugiego/projektu/
-python3 fix_image_flash.py
-```
+### ✅ Zmiany w Python
+- `save_pages.py` - nie nadpisuje istniejących plików
+- `hotspot-editor-food.html` - nowe komunikaty o zapisanych plikach
 
-### Krok 5: Opcjonalnie - zaktualizuj save_pages.py i hotspot-editor
-Jeśli używasz tych plików, zastosuj zmiany z punktów 4 i 5
+### ✅ Deployment
+- Zaktualizowano `deploy.sh` - wyklucza pliki *.py i *.md z FTP
 
 ---
 
 ## ✅ WERYFIKACJA
 
 ### Sprawdź na telefonie (Firefox Mobile):
-1. ❌ Brak białej przerwy pod banerem
-2. ❌ Menu nie jest przesunięte w górę
-3. ❌ Brak migania zaslepki na stronach dań
+1. ✅ Brak białej przerwy pod banerem
+2. ✅ Menu nie jest przesunięte w górę
+3. ✅ Brak migania zaslepki na stronach dań
+4. ✅ Google Analytics działa na wszystkich podstronach
 
 ### Sprawdź w Eruda Console (opcjonalnie):
 ```javascript
@@ -376,6 +396,9 @@ getComputedStyle(document.documentElement).getPropertyValue('--vh')
 
 ---
 
-**Data utworzenia:** 22.10.2025  
+**Data wykonania:** 22.10.2025  
 **Autor zmian:** Cascade AI + Konrad  
-**Projekt:** Beirut Bar Menu
+**Projekt:** Kraken Bar Menu  
+**Commit:** 86fbec5  
+**Zmienione pliki:** 55  
+**Wdrożono na:** FTP (krakenbar)
